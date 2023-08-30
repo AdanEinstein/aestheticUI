@@ -73,10 +73,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AdanEinstein/aestheticUI.git"
+    "url": "https://github.com/AdanEinstein/aestheticUI"
   },
   "keywords": [],
   "author": "AdanEinstein",
-  "homepage": "https://github.com/AdanEinstein/aestheticUI.git#readme",
+  "homepage": "https://github.com/AdanEinstein/aestheticUI#readme",
   "license": "MIT"
 }
