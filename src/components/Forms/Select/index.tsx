@@ -1,5 +1,5 @@
-import { FormControl, FormHelperText, InputLabel, Select as Sel, SelectProps } from "@mui/material";
-import { ForwardedRef, PropsWithChildren, forwardRef } from "react";
+import { FormControl, FormHelperText, InputLabel, Select as Sel, SelectProps } from '@mui/material'
+import { ForwardedRef, PropsWithChildren, forwardRef } from 'react'
 
 export interface ISelectProps extends PropsWithChildren<SelectProps> {
     label: string
@@ -8,16 +8,21 @@ export interface ISelectProps extends PropsWithChildren<SelectProps> {
     variant?: 'standard' | 'outlined' | 'filled'
 }
 
-function Select({ isError = false, errorMessage = '', variant = "standard", label, children, ...rest }: ISelectProps, ref: ForwardedRef<HTMLSelectElement>) {
+function Select(
+    {
+        isError = false,
+        errorMessage = '',
+        variant = 'standard',
+        label,
+        children,
+        ...rest
+    }: ISelectProps,
+    ref: ForwardedRef<HTMLSelectElement>,
+) {
     return (
-        <FormControl variant={variant}
-        error={isError}
-        >
+        <FormControl variant={variant} error={isError}>
             <InputLabel>{label}</InputLabel>
-            <Sel
-                label={label}
-                {...rest}
-            >
+            <Sel label={label} {...rest}>
                 {children}
             </Sel>
             <FormHelperText>{errorMessage}</FormHelperText>
