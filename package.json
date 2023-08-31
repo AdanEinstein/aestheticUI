@@ -1,5 +1,5 @@
 {
-  "name": "aestheticUI",
+  "name": "@adaneinstein/aesthetic-ui",
   "private": false,
   "version": "0.0.0",
   "type": "module",
@@ -73,10 +73,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AdanEinstein/aestheticUI"
+    "url": "https://github.com/AdanEinstein/@adaneinstein/aesthetic-ui"
   },
   "keywords": [],
   "author": "AdanEinstein",
-  "homepage": "https://github.com/AdanEinstein/aestheticUI#readme",
+  "homepage": "https://github.com/AdanEinstein/@adaneinstein/aesthetic-ui#readme",
   "license": "MIT"
 }
