@@ -1,3 +1,4 @@
+
 import { FormControl, FormHelperText, InputLabel, Select as Sel, SelectProps } from '@mui/material'
 import { ForwardedRef, PropsWithChildren, forwardRef } from 'react'
 
@@ -22,7 +23,7 @@ function Select(
     return (
         <FormControl variant={variant} error={isError}>
             <InputLabel>{label}</InputLabel>
-            <Sel label={label} {...rest}>
+            <Sel label={label} {...rest} ref={ref}>
                 {children}
             </Sel>
             <FormHelperText>{errorMessage}</FormHelperText>

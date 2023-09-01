@@ -1,3 +1,4 @@
+
 export default function flatObject(obj: object, prevKey?: string): any {
     return Object.entries(obj)
         ?.map(([key, value]) => {

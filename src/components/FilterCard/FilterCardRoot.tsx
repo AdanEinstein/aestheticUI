@@ -1,4 +1,4 @@
-'use client'
+
 import { ReactNode, useEffect, useState } from 'react'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import { Button, Chip, Collapse, Grid, Stack } from '@mui/material'

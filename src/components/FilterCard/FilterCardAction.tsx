@@ -1,4 +1,4 @@
-'use client'
+
 import { Button, Grid } from '@mui/material'
 import { JSXElementConstructor, PropsWithChildren, ReactNode } from 'react'
 import { tv } from 'tailwind-variants'

@@ -1,10 +1,10 @@
-'use client'
+
 import { MenuItem } from '@mui/material'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import { ComponentProps, ComponentType, MouseEvent, useState } from 'react'
 import { tv } from 'tailwind-variants'
-import { NavItem } from '@/@types/sitemap'
+import { NavItem } from '../../../@types/sitemap'
 
 export interface INavProps extends ComponentProps<'div'> {
     sitemap: NavItem[]

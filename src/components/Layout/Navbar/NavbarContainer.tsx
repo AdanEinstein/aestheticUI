@@ -1,10 +1,11 @@
-import {} from 'react'
+
 import { tv } from 'tailwind-variants'
 import { INavbarProps } from './NavbarRoot'
 
-interface INavbarContainerProps extends INavbarProps {
+export interface INavbarContainerProps extends INavbarProps {
     title?: string
     subtitle?: string
+    currentUser?: string,
 }
 
 const navbar = tv({
@@ -16,12 +17,15 @@ const NavbarContainer = ({
     subtitle,
     children,
     className,
+    currentUser,
     ...rest
 }: INavbarContainerProps) => {
     return (
         <div className={navbar({ className })} {...rest}>
             <div className="text-md font-medium md:block hidden">{title}</div>
-            <div className="text-sm font-regular md:block hidden">{subtitle}</div>
+            <div className="text-sm font-regular md:block hidden">
+                {!!currentUser ? `Usuário: ${currentUser}` : subtitle}
+            </div>
             {children}
         </div>
     )

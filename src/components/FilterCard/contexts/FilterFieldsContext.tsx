@@ -1,4 +1,4 @@
-'use client'
+
 import {
     ChangeEvent,
     PropsWithChildren,
@@ -11,7 +11,7 @@ import {
 import { GridColDef } from '@mui/x-data-grid'
 import FilterModal from './FilterModal'
 import { useSnackbar } from 'notistack'
-import { IModalAttributes } from '@/components/BasicModal'
+import { IModalAttributes } from '../../../components/BasicModal'
 
 export interface FilterField {
     label?: string

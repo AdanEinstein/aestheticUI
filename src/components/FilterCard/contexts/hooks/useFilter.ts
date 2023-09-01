@@ -13,7 +13,7 @@ export default function useFilter<T extends object>(
 
   const filteredData = data.filter((item) => {
     if (!!fields.length) {
-      return search.every((sch, i) => {
+      return search.every((sch) => {
         return Object.entries(flatObject(item)).some(([key, value]) => {
           const columns = model.filter((col) => col.field == key);
           if (
@@ -22,7 +22,7 @@ export default function useFilter<T extends object>(
             (typeof value == "string" || typeof value == "number")
           ) {
             return search.some(
-              (sch, i) =>
+              (sch) =>
                 Intl.DateTimeFormat("pt-br", { dateStyle: "short" })
                   .format(adjustedDate(`${value}`))
                   .toLowerCase()
@@ -38,7 +38,7 @@ export default function useFilter<T extends object>(
       });
     }
 
-    return search.every((sch, i) => {
+    return search.every((sch) => {
       return Object.entries(flatObject(item)).some(([key, value]) => {
         const columns = model.filter((col) => col.field == key);
         if (

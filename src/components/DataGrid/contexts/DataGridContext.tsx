@@ -1,5 +1,5 @@
-import BasicModal from '@/components/BasicModal'
-import { IModalAttributes } from '@/components/BasicModal'
+import BasicModal from '../../../components/BasicModal'
+import { IModalAttributes } from '../../../components/BasicModal'
 import { GridRenderCellParams, GridTreeNodeWithRender, GridValidRowModel } from '@mui/x-data-grid'
 import {
     Dispatch,

@@ -1,8 +1,10 @@
 {
   "name": "@adaneinstein/aesthetic-ui",
   "private": false,
-  "version": "0.0.2",
+  "version": "0.1.7",
   "type": "module",
+  "main": "./dist/index.es.js",
+  "module": "./dist/index.es.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -13,26 +15,10 @@
     "prepare": "husky install",
     "test": "jest --config jestconfig.json"
   },
-  "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@hookform/resolvers": "^3.3.1",
-    "@mui/icons-material": "^5.14.7",
-    "@mui/material": "^5.14.7",
-    "@mui/x-data-grid": "^6.12.0",
-    "notistack": "^3.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hook-form": "^7.45.4",
-    "tailwind-variants": "^0.1.13",
-    "vite-plugin-dts": "^3.5.3",
-    "vite-plugin-linter": "^2.0.5",
-    "vite-tsconfig-paths": "^4.2.0",
-    "zod": "^3.22.2"
-  },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.4",
+    "@types/mocha": "^10.0.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
@@ -54,7 +40,22 @@
     "tailwindcss": "^3.3.3",
     "ts-jest": "^29.1.1",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@hookform/resolvers": "^3.3.1",
+    "@mui/icons-material": "^5.14.7",
+    "@mui/material": "^5.14.7",
+    "@mui/x-data-grid": "^6.12.0",
+    "notistack": "^3.0.1",
+    "react": "16.8.0 || >=17.x",
+    "react-dom": "16.8.0 || >=17.x",
+    "react-hook-form": "^7.45.4",
+    "tailwind-variants": "^0.1.13",
+    "vite-plugin-dts": "^3.5.3",
+    "vite-plugin-linter": "^2.0.5",
+    "vite-tsconfig-paths": "^4.2.0",
+    "zod": "^3.22.2"
   },
   "peerDependencies": {
     "react": "16.8.0 || >=17.x",
@@ -75,8 +76,21 @@
     "type": "git",
     "url": "https://github.com/AdanEinstein/@adaneinstein/aesthetic-ui"
   },
-  "keywords": ["typescript", "react", "ui"],
+  "keywords": [
+    "typescript",
+    "react",
+    "ui"
+  ],
   "author": "AdanEinstein",
   "homepage": "https://github.com/AdanEinstein/@adaneinstein/aesthetic-ui#readme",
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "types": "./dist/index.d.ts"
+    }
+  }
 }

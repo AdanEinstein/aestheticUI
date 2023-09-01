@@ -1,4 +1,4 @@
-'use client'
+
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import { ForwardRefRenderFunction, forwardRef } from 'react'
 import { GridColDef } from '@mui/x-data-grid'

@@ -1,3 +1,4 @@
+
 import NavbarContainer from './NavbarContainer'
 import NavbarContent from './NavbarContent'
 import NavbarRight from './NavbarRight'
@@ -11,3 +12,5 @@ export const Navbar = {
 }
 
 export type { INavbarProps } from './NavbarRoot'
+export type { INavbarRightProps } from './NavbarRight'
+export type { INavbarContainerProps } from './NavbarContainer'

@@ -1,3 +1,4 @@
+
 const timeZone = "America/Sao_Paulo";
 
 const getTimeZoneOffset = (timeZone: string) => {
