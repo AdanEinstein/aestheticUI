@@ -38,8 +38,8 @@ export {
     Input,
     Navbar,
     Select,
-    FilterCard, // => Para utilizá-lo é necessário o contexto "FilterFieldsProvider" e o Hook "useFilter"
     BasicModal,
+    FilterCard, // => Para utilizá-lo é necessário o contexto "FilterFieldsProvider" e o Hook         
     DataGridActions,
     SelectAutoComplete,
 } from '@adaneinstein/aesthetic-ui'
@@ -52,7 +52,7 @@ export { FilterFieldsProvider } from '@adaneinstein/aesthetic-ui'
 
 # Hooks
 ```js
-export { useFilter } from '@adaneinstein/aesthetic-ui'
+export { useFilter, useDataGrid } from '@adaneinstein/aesthetic-ui'
 ```
 
 # Util functions

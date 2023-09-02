@@ -1,6 +1,4 @@
-"use client";
 import { GridColDef } from "@mui/x-data-grid";
-import {} from "react";
 import { useFilterFields } from "../FilterFieldsContext";
 import flatObject from "../../../../utils/flatObject";
 import { adjustedDate } from "../../../../utils/converters/date";
