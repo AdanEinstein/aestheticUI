@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react'
 
-import 'jest-canvas-mock'
+import { describe, it } from '@jest/globals';
 
-import App from '../src/App'
+import { Card } from "../src/index";
 
 describe('Common render', () => {
   it('renders without crashing', () => {
-    render(<App />)
+    render(<Card.Root></Card.Root>)
   })
 })

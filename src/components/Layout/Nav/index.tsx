@@ -15,7 +15,7 @@ const nav = tv({
     base: 'flex flex-row',
 })
 
-const Nav = ({ className, sitemap, linkWrapper: Link }: INavProps) => {
+const Item = ({ item, linkWrapper: Link }: { item: NavItem } & Pick<INavProps, 'linkWrapper'>) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
 
@@ -26,43 +26,49 @@ const Nav = ({ className, sitemap, linkWrapper: Link }: INavProps) => {
     const handleClose = () => {
         setAnchorEl(null)
     }
+    return (
+        <div key={item.id}>
+            <Button
+                id="basic-button"
+                style={{ color: '#FFF', fontWeight: 'bold' }}
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={!!item?.link ? () => item.handleLink(item) : handleClick}
+            >
+                {item.name}
+            </Button>
+            {!!item.items?.length && (
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }}
+                >
+                    {item.items?.map((el) => (
+                        <MenuItem key={el.id} onClick={handleClose}>
+                            {!!Link ? (
+                                <Link href={el.link()}>{el.label}</Link>
+                            ) : (
+                                <a href={el.link()}>{el.label}</a>
+                            )}
+                        </MenuItem>
+                    ))}
+                </Menu>
+            )}
+        </div>
+    )
+}
+
+const Nav = ({ className, sitemap, linkWrapper: Link }: INavProps) => {
 
     return (
         <div className={nav({ className })}>
             {sitemap.map((item: NavItem) => (
-                <div key={item.id}>
-                    <Button
-                        id="basic-button"
-                        style={{ color: '#FFF', fontWeight: 'bold' }}
-                        aria-controls={open ? 'basic-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={!!item?.link ? () => item.handleLink(item) : handleClick}
-                    >
-                        {item.name}
-                    </Button>
-                    {!!item.items?.length && (
-                        <Menu
-                            id="basic-menu"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            MenuListProps={{
-                                'aria-labelledby': 'basic-button',
-                            }}
-                        >
-                            {item.items?.map((el) => (
-                                <MenuItem key={el.id} onClick={handleClose}>
-                                    {!!Link ? (
-                                        <Link href={el.link()}>{el.label}</Link>
-                                    ) : (
-                                        <a href={el.link()}>{el.label}</a>
-                                    )}
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    )}
-                </div>
+                <Item item={item} linkWrapper={Link}/>
             ))}
         </div>
     )
