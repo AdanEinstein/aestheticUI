@@ -12,7 +12,7 @@ import SearchIcon from '@mui/icons-material/Search'
 export interface FilterCardRootProps<T extends object> {
     dataModel: GridColDef<T>[]
 
-    title: string
+    title: ReactNode
     action?: ReactNode
     footer?: ReactNode
     className: string
@@ -41,7 +41,7 @@ const FilterCardRoot = <T extends object>({
         <Card.Root className={filterCardRoot({ className })}>
             <Card.Header className="flex justify-between">
                 <div className="flex md:flex-row flex-col md:items-center items-start justify-start gap-3">
-                    <span className="font-light text-lg">Critérios de Pesquisa ({title}): </span>
+                    {title}
                     {fields?.map((field) => (
                         <Chip
                             style={{ backgroundColor: '#FFF' }}
@@ -106,7 +106,7 @@ const FilterCardRoot = <T extends object>({
                     </Grid>
                     {action}
                 </Card.Body>
-                <Card.Footer>{footer}</Card.Footer>
+                {!!footer && <Card.Footer>{footer}</Card.Footer>}
             </Collapse>
         </Card.Root>
     )
