@@ -68,7 +68,7 @@ const Nav = ({ className, sitemap, linkWrapper: Link }: INavProps) => {
     return (
         <div className={nav({ className })}>
             {sitemap.map((item: NavItem) => (
-                <Item item={item} linkWrapper={Link}/>
+                <Item key={item.id} item={item} linkWrapper={Link} />
             ))}
         </div>
     )
