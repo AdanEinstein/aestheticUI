@@ -2,39 +2,32 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './style.css'
 import { Card, Nav, Navbar } from "./components";
-import { NavItem } from './@types/sitemap';
+import { INav } from './@types/sitemap';
 
-const sitemap :NavItem[] = [
-    {
-        id: 1,
+const sitemap: INav = {
+    contratos: {
         name: "Contratos",
-        items: [
-            {
-                id: 2,
+        items: {
+            cadastro: {
                 label: "Cadastro de contratos",
                 link: () => "/cadastro-de-contratos"
             },
-
-            {
-                id: 3,
+            vencer: {
                 label: "Contratos a vencer",
                 link: () => "/contratos-a-vencer"
             }
-        ]
+        }
     },
-
-    {
-        id: 4,
+    manutencao: {
         name: "Manutenção",
-        items: [
-            {
-                id: 5,
+        items: {
+           pessoas: {
                 label: "Pessoas",
                 link: () => "/pessoas"
             }
-        ]
+        }
     }
-]
+}
 
 function App() {
     return (
@@ -47,7 +40,7 @@ function App() {
         >
             <Navbar.Root className="gap-3">
                 <Navbar.Content>
-                    <Nav sitemap={sitemap}/>
+                    <Nav sitemap={sitemap} />
                 </Navbar.Content>
                 <Navbar.Right>
                     <Navbar.Container title="Aplicação" subtitle="&copy; Adan Einstein - 2023" />

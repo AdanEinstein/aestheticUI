@@ -4,10 +4,10 @@ import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import { ComponentProps, ComponentType, MouseEvent, useState } from 'react'
 import { tv } from 'tailwind-variants'
-import { NavItem } from '../../../@types/sitemap'
+import { INav, NavItem } from '../../../@types/sitemap'
 
 export interface INavProps extends ComponentProps<'div'> {
-    sitemap: NavItem[]
+    sitemap: INav
     linkWrapper?: ComponentType<ComponentProps<'a'>>
 }
 
@@ -27,7 +27,7 @@ const Item = ({ item, linkWrapper: Link }: { item: NavItem } & Pick<INavProps, '
         setAnchorEl(null)
     }
     return (
-        <div key={item.id}>
+        <div>
             <Button
                 id="basic-button"
                 style={{ color: '#FFF', fontWeight: 'bold' }}
@@ -38,7 +38,7 @@ const Item = ({ item, linkWrapper: Link }: { item: NavItem } & Pick<INavProps, '
             >
                 {item.name}
             </Button>
-            {!!item.items?.length && (
+            {!!item.items && (
                 <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}
@@ -48,8 +48,8 @@ const Item = ({ item, linkWrapper: Link }: { item: NavItem } & Pick<INavProps, '
                         'aria-labelledby': 'basic-button',
                     }}
                 >
-                    {item.items?.map((el) => (
-                        <MenuItem key={el.id} onClick={handleClose}>
+                    {Object.entries(item.items)?.map(([k, el]) => (
+                        <MenuItem key={k} onClick={handleClose}>
                             {!!Link ? (
                                 <Link href={el.link()}>{el.label}</Link>
                             ) : (
@@ -67,9 +67,11 @@ const Nav = ({ className, sitemap, linkWrapper: Link }: INavProps) => {
 
     return (
         <div className={nav({ className })}>
-            {sitemap.map((item: NavItem) => (
-                <Item key={item.id} item={item} linkWrapper={Link} />
-            ))}
+            {Object.entries(sitemap).map(([key, item]) => {
+                return (
+                    <Item key={key} item={item} linkWrapper={Link} />
+                )
+            })}
         </div>
     )
 }

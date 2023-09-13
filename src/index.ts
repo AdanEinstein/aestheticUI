@@ -18,7 +18,7 @@ export type {
     IDataGridActionsDeleteProps,
 } from './components'
 
-export type {NavItem, NavItemItem} from './@types/sitemap'
+export type {INav, NavItem, NavItemItem} from './@types/sitemap'
 
 export {
     Card,
