@@ -21,7 +21,7 @@ function Select(
     ref: ForwardedRef<HTMLSelectElement>,
 ) {
     return (
-        <FormControl variant={variant} error={isError}>
+        <FormControl variant={variant} error={isError} fullWidth>
             <InputLabel>{label}</InputLabel>
             <Sel label={label} {...rest} ref={ref}>
                 {children}

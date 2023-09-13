@@ -30,7 +30,7 @@ function SelectAutoComplete<T>(
     ref: ForwardedRef<HTMLSelectElement>,
 ) {
     return (
-        <FormControl variant={variant} error={isError}>
+        <FormControl variant={variant} error={isError} fullWidth>
             <Autocomplete ref={ref} {...rest} />
             <FormHelperText>{errorMessage}</FormHelperText>
         </FormControl>
