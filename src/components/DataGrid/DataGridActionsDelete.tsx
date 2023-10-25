@@ -17,7 +17,7 @@ const dataGridActionsDelete = tv({
 export default function DataGridActionsDelete({
     className,
     color = 'error',
-    icon = <DeleteIcon/>,
+    icon = <DeleteIcon />,
     children,
     ...rest
 }: PropsWithChildren<IDataGridActionsDeleteProps>) {
@@ -29,16 +29,13 @@ export default function DataGridActionsDelete({
     }, [setComponentDelete, modalDeleteRef, children])
 
     return (
-        <>
-            <IconButton
-                className={dataGridActionsDelete({ className })}
-                color={color}
-                onClick={openModal}
-                {...rest}
-            >
-                {icon}
-            </IconButton>
-            {children}
-        </>
+        <IconButton
+            className={dataGridActionsDelete({ className })}
+            color={color}
+            onClick={openModal}
+            {...rest}
+        >
+            {icon}
+        </IconButton>
     )
 }

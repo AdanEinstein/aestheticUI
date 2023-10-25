@@ -29,16 +29,13 @@ export default function DataGridActionsEdit({
     }, [setComponentEdit, modalEditRef, children])
 
     return (
-        <>
-            <IconButton
-                className={dataGridActionsEdit({ className })}
-                color={color}
-                onClick={openModal}
-                {...rest}
-            >
-                {icon}
-            </IconButton>
-            {children}
-        </>
+        <IconButton
+            className={dataGridActionsEdit({ className })}
+            color={color}
+            onClick={openModal}
+            {...rest}
+        >
+            {icon}
+        </IconButton>
     )
 }
