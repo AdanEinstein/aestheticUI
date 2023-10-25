@@ -1,16 +1,13 @@
 
-import { Button, ButtonProps } from '@mui/material'
+import { IconButton, IconButtonProps } from '@mui/material'
 import { PropsWithChildren, ReactNode, useCallback } from 'react'
 import { tv } from 'tailwind-variants'
 import EditIcon from '@mui/icons-material/Edit'
 import { useDataGrid } from './contexts/DataGridContext'
 
-export interface IDataGridActionsEditProps extends ButtonProps {
-    label: string
+export interface IDataGridActionsEditProps extends IconButtonProps {
     className?: string
-    variant?: 'text' | 'contained' | 'outlined'
-    color?: 'error' | 'inherit' | 'primary' | 'secondary' | 'success' | 'info' | 'warning'
-    endIcon?: ReactNode
+    icon?: ReactNode
 }
 
 const dataGridActionsEdit = tv({
@@ -20,9 +17,7 @@ const dataGridActionsEdit = tv({
 export default function DataGridActionsEdit({
     className,
     color = 'info',
-    endIcon = <EditIcon />,
-    label,
-    variant = 'contained',
+    icon = <EditIcon />,
     children,
     ...rest
 }: PropsWithChildren<IDataGridActionsEditProps>) {
@@ -34,15 +29,16 @@ export default function DataGridActionsEdit({
     }, [setComponentEdit, modalEditRef, children])
 
     return (
-        <Button
-            className={dataGridActionsEdit({ className })}
-            variant={variant}
-            color={color}
-            endIcon={endIcon}
-            onClick={openModal}
-            {...rest}
-        >
-            {label}
-        </Button>
+        <>
+            <IconButton
+                className={dataGridActionsEdit({ className })}
+                color={color}
+                onClick={openModal}
+                {...rest}
+            >
+                {icon}
+            </IconButton>
+            {children}
+        </>
     )
 }
