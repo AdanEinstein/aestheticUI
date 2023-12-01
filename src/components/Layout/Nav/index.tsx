@@ -9,6 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 
 export interface INavProps extends ComponentProps<'div'> {
   sitemap: INav
+  activeOnMouseOver?: boolean
   linkWrapper?: ComponentType<ComponentProps<'a'>>
   ItemsProps?: ButtonProps
 }
@@ -22,7 +23,11 @@ const Item = ({
   linkWrapper: Link,
   hasItems,
   ItemsProps,
-}: { item: NavItem; hasItems?: boolean } & Pick<INavProps, 'linkWrapper' | 'ItemsProps'>) => {
+  activeOnMouseOver
+}: { item: NavItem; hasItems?: boolean } & Pick<
+  INavProps,
+  'linkWrapper' | 'ItemsProps' | 'activeOnMouseOver'
+>) => {
   const anchorRef = useRef<HTMLButtonElement>(null)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const open = Boolean(anchorEl)
@@ -56,7 +61,7 @@ const Item = ({
         }
         onClick={handleActions(item)}
         endIcon={hasItems && <KeyboardArrowRight />}
-        onMouseOver={handleAnchor}
+        onMouseOver={activeOnMouseOver ? handleAnchor : () => {}}
         {...ItemsProps}
       >
         {item.name}
@@ -91,6 +96,7 @@ const Item = ({
                             style: { color: '#222', textTransform: 'none' },
                           }
                     }
+                    activeOnMouseOver={activeOnMouseOver}
                   />
                 </Link>
               ) : (
@@ -105,6 +111,7 @@ const Item = ({
                           style: { color: '#222', textTransform: 'none' },
                         }
                   }
+                  activeOnMouseOver={activeOnMouseOver}
                 />
               )}
             </MenuItem>
@@ -115,7 +122,7 @@ const Item = ({
   )
 }
 
-const Nav = ({ className, sitemap, linkWrapper: Link }: INavProps) => {
+const Nav = ({ className, sitemap, linkWrapper: Link, activeOnMouseOver = false }: INavProps) => {
   const wrapSitemap = {
     root: {
       name: <MenuIcon />,
@@ -126,12 +133,12 @@ const Nav = ({ className, sitemap, linkWrapper: Link }: INavProps) => {
     <div className={nav({ className })}>
       <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
         {Object.entries(sitemap).map(([key, item]) => {
-          return <Item key={key} item={item} linkWrapper={Link} />
+          return <Item key={key} item={item} linkWrapper={Link} activeOnMouseOver={activeOnMouseOver}/>
         })}
       </Box>
       <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
         {Object.entries(wrapSitemap).map(([key, item]) => {
-          return <Item key={key} item={item} linkWrapper={Link} />
+          return <Item key={key} item={item} linkWrapper={Link} activeOnMouseOver={activeOnMouseOver}/>
         })}
       </Box>
     </div>

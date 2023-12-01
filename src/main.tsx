@@ -153,7 +153,7 @@ function Page() {
     >
       <Navbar.Root className="gap-3">
         <Navbar.Content>
-          <Nav sitemap={sitemap} linkWrapper={props => <a {...props}>{props.children}</a>}/>
+          <Nav sitemap={sitemap} linkWrapper={props => <a {...props}>{props.children}</a>} activeOnMouseOver/>
         </Navbar.Content>
         <Navbar.Right>
           <Navbar.Container title="Aplicação" subtitle="&copy; Adan Einstein - 2023" />
