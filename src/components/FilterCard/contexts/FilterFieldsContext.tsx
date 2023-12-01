@@ -1,8 +1,11 @@
 
 import {
     ChangeEvent,
+    Dispatch,
     PropsWithChildren,
+    ReactNode,
     RefObject,
+    SetStateAction,
     createContext,
     useContext,
     useRef,
@@ -29,6 +32,7 @@ interface IFilterFields {
     addField: (field: FilterField) => void
     removeField: (field: string) => void
     setColumns: (columns: GridColDef[]) => void
+    setFilterModalTitle: Dispatch<SetStateAction<ReactNode>>
 }
 
 const FilterFieldsContext = createContext<IFilterFields>({} as IFilterFields)
@@ -38,6 +42,7 @@ export const FilterFieldsProvider = ({ children }: PropsWithChildren) => {
     const [fields, setFields] = useState<FilterField[]>([])
     const [columns, setColumns] = useState<GridColDef[]>([])
     const [search, setSearch] = useState<string[]>([''])
+    const [filterModalTitle, setFilterModalTitle] = useState<ReactNode>()
 
     const { enqueueSnackbar } = useSnackbar()
 
@@ -87,12 +92,13 @@ export const FilterFieldsProvider = ({ children }: PropsWithChildren) => {
                 filterModalRef,
                 addField,
                 handleChangeSearch,
+                setFilterModalTitle,
                 removeField,
                 setColumns,
                 search,
             }}
         >
-            <FilterModal title="Filtrar Campos" columns={columns} ref={filterModalRef} />
+            <FilterModal title={filterModalTitle} columns={columns} ref={filterModalRef} />
             {children}
         </FilterFieldsContext.Provider>
     )

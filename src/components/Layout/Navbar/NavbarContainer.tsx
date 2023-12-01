@@ -22,8 +22,8 @@ const NavbarContainer = ({
 }: INavbarContainerProps) => {
     return (
         <div className={navbar({ className })} {...rest}>
-            <div className="text-md font-medium md:block hidden">{title}</div>
-            <div className="text-sm font-regular md:block hidden">
+            <div className="text-md font-medium">{title}</div>
+            <div className="text-sm font-regular">
                 {!!currentUser ? `Usuário: ${currentUser}` : subtitle}
             </div>
             {children}

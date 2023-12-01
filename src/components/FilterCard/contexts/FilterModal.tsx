@@ -1,6 +1,6 @@
 
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
-import { ForwardRefRenderFunction, forwardRef } from 'react'
+import { ForwardRefRenderFunction, ReactNode, forwardRef } from 'react'
 import { GridColDef } from '@mui/x-data-grid'
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material'
 import { useFilterFields } from './FilterFieldsContext'
@@ -11,7 +11,7 @@ import { Card } from '../../Layout/Card'
 import BasicModal, { IModalAttributes } from '../../BasicModal'
 
 export interface IFilterModalProps {
-    title: string
+    title: ReactNode
     columns: GridColDef[]
 }
 
@@ -63,7 +63,7 @@ const FilterModal: ForwardRefRenderFunction<IModalAttributes, IFilterModalProps>
                                     addField({
                                         label: columns.filter(
                                             (col) => col.field == String(getValues('campos')),
-                                        )[0]?.headerName,
+                                        )[0].headerName,
                                         value: String(getValues('campos')),
                                     })
                                 }}

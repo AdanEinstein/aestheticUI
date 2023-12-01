@@ -25,7 +25,7 @@ export default function DataGridActionsEdit({
 
     const openModal = useCallback(() => {
         setComponentEdit(children)
-        modalEditRef.current?.openModal()
+        if(!!modalEditRef.current) modalEditRef.current.openModal()
     }, [setComponentEdit, modalEditRef, children])
 
     return (

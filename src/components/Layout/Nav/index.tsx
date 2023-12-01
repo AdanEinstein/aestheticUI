@@ -1,79 +1,141 @@
-
-import { MenuItem } from '@mui/material'
-import Button from '@mui/material/Button'
+import { Box, MenuItem } from '@mui/material'
+import Button, { ButtonProps } from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
-import { ComponentProps, ComponentType, MouseEvent, useState } from 'react'
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+import { ComponentProps, ComponentType, useRef, useState } from 'react'
 import { tv } from 'tailwind-variants'
 import { INav, NavItem } from '../../../@types/sitemap'
+import MenuIcon from '@mui/icons-material/Menu'
 
 export interface INavProps extends ComponentProps<'div'> {
-    sitemap: INav
-    linkWrapper?: ComponentType<ComponentProps<'a'>>
+  sitemap: INav
+  linkWrapper?: ComponentType<ComponentProps<'a'>>
+  ItemsProps?: ButtonProps
 }
 
 const nav = tv({
-    base: 'flex flex-row',
+  base: 'flex flex-row',
 })
 
-const Item = ({ item, linkWrapper: Link }: { item: NavItem } & Pick<INavProps, 'linkWrapper'>) => {
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-    const open = Boolean(anchorEl)
+const Item = ({
+  item,
+  linkWrapper: Link,
+  hasItems,
+  ItemsProps,
+}: { item: NavItem; hasItems?: boolean } & Pick<INavProps, 'linkWrapper' | 'ItemsProps'>) => {
+  const anchorRef = useRef<HTMLButtonElement>(null)
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const open = Boolean(anchorEl)
 
-    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget)
-    }
+  const handleAnchor = () => {
+    setAnchorEl(anchorRef.current)
+  }
 
-    const handleClose = () => {
-        setAnchorEl(null)
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleActions = (item: NavItem) => {
+    return () => {
+      if ('handleLink' in item && !!item.handleLink) {
+        item.handleLink(item)
+      } else {
+        handleAnchor()
+      }
     }
-    return (
-        <div>
-            <Button
-                id="basic-button"
-                style={{ color: '#FFF', fontWeight: 'bold' }}
-                aria-controls={open ? 'basic-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={!!item?.link ? () => item.handleLink(item) : handleClick}
-            >
-                {item.name}
-            </Button>
-            {!!item.items && (
-                <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                        'aria-labelledby': 'basic-button',
-                    }}
-                >
-                    {Object.entries(item.items)?.map(([k, el]) => (
-                        <MenuItem key={k} onClick={handleClose}>
-                            {!!Link ? (
-                                <Link href={el.link()}>{el.label}</Link>
-                            ) : (
-                                <a href={el.link()}>{el.label}</a>
-                            )}
-                        </MenuItem>
-                    ))}
-                </Menu>
-            )}
-        </div>
-    )
+  }
+
+  return (
+    <>
+      <Button
+        ref={anchorRef}
+        style={
+          !!ItemsProps && !!ItemsProps.style
+            ? ItemsProps.style
+            : { fontWeight: 'bold', color: 'white', textTransform: 'none' }
+        }
+        onClick={handleActions(item)}
+        endIcon={hasItems && <KeyboardArrowRight />}
+        onMouseOver={handleAnchor}
+        {...ItemsProps}
+      >
+        {item.name}
+      </Button>
+      {!!item.items && (
+        <Menu
+          anchorEl={anchorEl}
+          anchorOrigin={
+            !!ItemsProps
+              ? { horizontal: 'right', vertical: 'top' }
+              : { horizontal: 'left', vertical: 'bottom' }
+          }
+          anchorReference="anchorEl"
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            onMouseLeave: handleClose,
+          }}
+        >
+          {Object.entries(item.items).map(([k, el]) => (
+            <MenuItem key={k}>
+              {!!Link && !!el.link ? (
+                <Link href={el.link()}>
+                  <Item
+                    item={el}
+                    linkWrapper={Link}
+                    hasItems={!!el.items}
+                    ItemsProps={
+                      !!ItemsProps
+                        ? ItemsProps
+                        : {
+                            style: { color: '#222', textTransform: 'none' },
+                          }
+                    }
+                  />
+                </Link>
+              ) : (
+                <Item
+                  item={el}
+                  linkWrapper={Link}
+                  hasItems={!!el.items}
+                  ItemsProps={
+                    !!ItemsProps
+                      ? ItemsProps
+                      : {
+                          style: { color: '#222', textTransform: 'none' },
+                        }
+                  }
+                />
+              )}
+            </MenuItem>
+          ))}
+        </Menu>
+      )}
+    </>
+  )
 }
 
 const Nav = ({ className, sitemap, linkWrapper: Link }: INavProps) => {
-
-    return (
-        <div className={nav({ className })}>
-            {Object.entries(sitemap).map(([key, item]) => {
-                return (
-                    <Item key={key} item={item} linkWrapper={Link} />
-                )
-            })}
-        </div>
-    )
+  const wrapSitemap = {
+    root: {
+      name: <MenuIcon />,
+      items: { ...sitemap },
+    },
+  }
+  return (
+    <div className={nav({ className })}>
+      <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+        {Object.entries(sitemap).map(([key, item]) => {
+          return <Item key={key} item={item} linkWrapper={Link} />
+        })}
+      </Box>
+      <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+        {Object.entries(wrapSitemap).map(([key, item]) => {
+          return <Item key={key} item={item} linkWrapper={Link} />
+        })}
+      </Box>
+    </div>
+  )
 }
 
 export default Nav

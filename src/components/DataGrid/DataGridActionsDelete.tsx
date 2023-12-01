@@ -25,7 +25,7 @@ export default function DataGridActionsDelete({
 
     const openModal = useCallback(() => {
         setComponentDelete(children)
-        modalDeleteRef.current?.openModal()
+        if(!!modalDeleteRef.current) modalDeleteRef.current.openModal()
     }, [setComponentDelete, modalDeleteRef, children])
 
     return (

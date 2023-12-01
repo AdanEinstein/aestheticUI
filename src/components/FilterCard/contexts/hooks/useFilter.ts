@@ -25,12 +25,12 @@ export default function useFilter<T extends object>(
                   .format(adjustedDate(`${value}`))
                   .toLowerCase()
                   .includes(sch.toLowerCase()) &&
-                fields?.map((el) => el.value).includes(key)
+                fields.map((el) => el.value).includes(key)
             );
           }
           return (
             `${value}`.toLowerCase().includes(sch.toLowerCase()) &&
-            fields?.map((el) => el.value).includes(key)
+            fields.map((el) => el.value).includes(key)
           );
         });
       });
