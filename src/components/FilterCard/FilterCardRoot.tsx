@@ -34,7 +34,6 @@ const FilterCardRoot = <T extends object>({
     filterModalRef,
     removeField,
     setColumns,
-    search,
     handleChangeSearch,
     setFilterModalTitle,
   } = useFilterFields()
