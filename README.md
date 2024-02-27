@@ -63,8 +63,6 @@ export { flatObject } from '@adaneinstein/aesthetic-ui'
 //Funções que auxiliam caso o timezone seja Sao_Paulo/Brasil
 export { isValidDate, adjustedDate } from '@adaneinstein/aesthetic-ui'
 
-//Formata uma string de um padrão snackCase para Pascal Case
-export { snakeCasetoPascal_Case } from '@adaneinstein/aesthetic-ui'
 ```
 
 # Exemplos...
@@ -109,4 +107,28 @@ function App() {
 }
 
 export default App
+```
+
+# Utilizando o useFilter
+```js
+function Page() {
+  /**
+   * "useFilter" params types -> {data, model}: { data: T[],  model: GridColDef[] }
+  */
+  const { filteredData, loading } = useFilter({data, model})
+
+  return (
+    <Table data={filteredData} />
+  )
+}
+
+
+function App() {
+  return (
+    <FilterFieldsProvider>
+      <Page />
+    </FilterFieldsProvider>
+  )
+}
+
 ```
