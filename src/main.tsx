@@ -141,7 +141,7 @@ export const pessoaModel: GridColDef<any>[] = [
 ]
 
 function Page() {
-  const { filteredData } = useFilter(pessoas, pessoaModel)
+  const { filteredData, loading } = useFilter({data: pessoas as any, model: pessoaModel})
 
   return (
     <div
@@ -172,9 +172,10 @@ function Page() {
           </Card.Header>
           <Card.Body className="h-[480px]">
             <DataGrid
+              loading={loading}
               rows={filteredData}
               columns={pessoaModel}
-              getRowId={(row) => `${row.id}`}
+              getRowId={(row) => `${Math.random() * row.id}`}
               localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
               initialState={{
                 columns: {

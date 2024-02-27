@@ -78,7 +78,6 @@ const FilterCardRoot = <T extends object>({
                     id="pesquisa"
                     name={`pesquisa_${field.value}`}
                     placeholder="Termo de pesquisa"
-                    value={search[index]}
                     onChange={(e) => handleChangeSearch(e, index)}
                   />
                 ))
@@ -90,7 +89,6 @@ const FilterCardRoot = <T extends object>({
                   id="pesquisa"
                   name="pesquisa"
                   placeholder="Termo de pesquisa"
-                  value={search[0]}
                   onChange={handleChangeSearch}
                 />
               )}
