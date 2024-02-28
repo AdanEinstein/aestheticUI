@@ -16,75 +16,75 @@ import pessoas from './data/pessoas.json'
 
 const sitemap: INav = {
   menu1: {
-    name: "Cadastro",
+    name: 'Cadastro',
     items: {
       produto: {
-        name: "Produto",
+        name: 'Produto',
         items: {
           new: {
-            name: "Novo",
-            link: () => '/produto/new'
+            name: 'Novo',
+            link: () => '/produto/new',
           },
           list: {
-            name: "Listar",
-            handleLink: () => console.log('Function void')
-          }
-        }
+            name: 'Listar',
+            handleLink: () => console.log('Function void'),
+          },
+        },
       },
       ofertas: {
-        name: "Oferta",
+        name: 'Oferta',
         items: {
           new: {
-            name: "Novo",
-            link: () => '/ofertas/new'
+            name: 'Novo',
+            link: () => '/ofertas/new',
           },
           list: {
-            name: "Listar",
-            handleLink: () => console.log('Function void')
-          }
-        }
+            name: 'Listar',
+            handleLink: () => console.log('Function void'),
+          },
+        },
       },
       pessoas: {
-        name: "Pessoas",
-        link: () => '/pessoa'
-      }
-    }
+        name: 'Pessoas',
+        link: () => '/pessoa',
+      },
+    },
   },
   menu2: {
-    name: "Configuração",
+    name: 'Configuração',
     items: {
       usuario: {
-        name: "Usuário",
+        name: 'Usuário',
         items: {
           new: {
-            name: "Novo",
-            link: () => '/user/new'
+            name: 'Novo',
+            link: () => '/user/new',
           },
           list: {
-            name: "Listar",
-            handleLink: () => console.log('Function void')
-          }
-        }
+            name: 'Listar',
+            handleLink: () => console.log('Function void'),
+          },
+        },
       },
       conta: {
-        name: "Conta",
+        name: 'Conta',
         items: {
           new: {
-            name: "Novo",
-            link: () => '/conta/new'
+            name: 'Novo',
+            link: () => '/conta/new',
           },
           list: {
-            name: "Listar",
-            handleLink: () => console.log('Function void')
-          }
-        }
-      }
-    }
+            name: 'Listar',
+            handleLink: () => console.log('Function void'),
+          },
+        },
+      },
+    },
   },
   menu3: {
-    name: "Manutenção",
-    handleLink:() => console.log('Function void')
-  }
+    name: 'Manutenção',
+    handleLink: () => console.log('Function void'),
+  },
 }
 
 export const pessoaModel: GridColDef<any>[] = [
@@ -141,7 +141,7 @@ export const pessoaModel: GridColDef<any>[] = [
 ]
 
 function Page() {
-  const { filteredData, loading } = useFilter({data: pessoas as any, model: pessoaModel})
+  const { filteredData, loading } = useFilter({ data: pessoas as any, model: pessoaModel })
 
   return (
     <div
@@ -153,7 +153,11 @@ function Page() {
     >
       <Navbar.Root className="gap-3">
         <Navbar.Content>
-          <Nav sitemap={sitemap} linkWrapper={props => <a {...props}>{props.children}</a>} activeOnMouseOver/>
+          <Nav
+            sitemap={sitemap}
+            linkWrapper={(props) => <a {...props}>{props.children}</a>}
+            activeOnMouseOver
+          />
         </Navbar.Content>
         <Navbar.Right>
           <Navbar.Container title="Aplicação" subtitle="&copy; Adan Einstein - 2023" />
@@ -161,6 +165,8 @@ function Page() {
       </Navbar.Root>
       <div className="w-screen flex flex-col justify-center items-center">
         <FilterCard.Root
+          showTooltip
+          filterTrigger="onenter"
           className="md:w-4/6"
           dataModel={pessoaModel}
           title={<span className="text-2xl font-light">Filtrar Pessoas</span>}
