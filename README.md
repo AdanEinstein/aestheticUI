@@ -3,7 +3,7 @@
 É um pacote de com componentes de layout para facilitar a construção de interfaces gráficas.
 
 ## Configuração
-> Adicione está linha no arquivo tailwind.config.js
+> Adicione esta linha no arquivo tailwind.config.js
 ```js
 /** @type {import('tailwindcss').Config} */
 export default {
