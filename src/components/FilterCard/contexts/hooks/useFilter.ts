@@ -13,6 +13,10 @@ export default function useFilter<T extends object>({data, model}: {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    setFilteredData(data);
+  }, [data]);
+
+  useEffect(() => {
     setLoading(true)
     setTimeout(() => {
       const newFilteredData = data.filter((item) => {
