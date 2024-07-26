@@ -1,17 +1,18 @@
 import { Children, ReactElement, ReactNode, useEffect, useState } from 'react'
-import FilterAltIcon from '@mui/icons-material/FilterAlt'
-import { Button, Chip, Collapse, Grid, Stack, Tooltip } from '@mui/material'
-import { GridColDef } from '@mui/x-data-grid'
 import { Card } from '../Layout/Card'
-import Input from '../Forms/Input'
 import { useFilterFields } from './contexts/FilterFieldsContext'
 import { tv } from 'tailwind-variants'
-import SearchIcon from '@mui/icons-material/Search'
+import { Badge } from '../ui/badge'
+import { Search } from 'lucide-react'
+import { Collapsible } from '../ui/collapsible'
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
+import { Button } from '../ui/button'
 
 type FilterTriggerType = 'onchange' | 'onenter'
 
-export interface FilterCardRootProps<T extends object> {
-  dataModel: GridColDef<T>[]
+export interface FilterCardRootProps<T> {
+  dataModel: any[]
   title?: ReactNode
   titleModal?: ReactNode
   action?: ReactNode
@@ -31,7 +32,7 @@ const filterCardRoot = tv({
   base: '',
 })
 
-const FilterCardRoot = <T extends object>({
+const FilterCardRoot = <T,>({
   dataModel,
   title,
   action,
@@ -42,17 +43,9 @@ const FilterCardRoot = <T extends object>({
   showTooltip = false,
   TooltipComponent = (children, showTooltip, open, filterTrigger) =>
     showTooltip ? (
-      <Tooltip
-        open={open}
-        title={
-          filterTrigger == 'onchange'
-            ? 'A filtragem é feita enquanto digita'
-            : 'Pressione ENTER para filtrar'
-        }
-        arrow
-      >
+      <div>
         {children}
-      </Tooltip>
+      </div>
     ) : (
       children
     ),
@@ -71,7 +64,7 @@ const FilterCardRoot = <T extends object>({
 
   useEffect(() => {
     setColumns(dataModel)
-    setFilterModalTitle(!!titleModal ? titleModal : title)
+    setFilterModalTitle(titleModal ? titleModal : title)
   }, [setColumns, dataModel])
 
   return (
@@ -81,92 +74,74 @@ const FilterCardRoot = <T extends object>({
           {title}
           {Children.toArray(
             fields.map((field) => (
-              <Chip
-                style={{ backgroundColor: '#FFF' }}
-                // key={field.value}
-                label={field.label}
-                variant="filled"
-                onDelete={() => removeField(field.value)}
-              />
+              <Badge onClick={() => removeField(field.value)}>{field.label}</Badge>
             )),
           )}
         </div>
-        <div className="hover:bg-blue-300 rounded-lg p-1" onClick={() => setShow((prev) => !prev)}>
-          <SearchIcon />
+        <div onClick={() => setShow((prev) => !prev)}>
+          <Search />
         </div>
       </Card.Header>
-      <Collapse in={show}>
+      <Collapsible open={show}>
         <Card.Body className="flex flex-col gap-3">
-          <Grid container spacing={2}>
-            <Grid item lg={10} sm={8} xs={12}>
-              {fields.length
-                ? Children.toArray(
-                    fields.map((field, index) =>
-                      TooltipComponent(
-                        <Input
-                          className="w-full"
-                          label={field.label || 'Filtro vazio'}
-                          type="text"
-                          id="pesquisa"
-                          name={`pesquisa_${field.value}`}
-                          placeholder="Termo de pesquisa"
-                          onChange={(e) =>
-                            filterTrigger == 'onchange' && handleChangeSearch(e, index)
-                          }
-                          onKeyUp={(e) =>
-                            filterTrigger == 'onenter' &&
-                            e.code == 'Enter' &&
-                            handleKeyUpSearch(e, index)
-                          }
-                        />,
-                        showTooltip,
-                        showTooltipState,
-                        filterTrigger,
-                      ),
-                    ),
-                  )
-                : TooltipComponent(
-                    <Input
-                      className="w-full"
-                      label="Pesquisa"
-                      type="text"
-                      id="pesquisa"
-                      name="pesquisa"
-                      placeholder="Termo de pesquisa"
-                      onFocus={() => setShowTooltipState(true)}
-                      onBlur={() => setShowTooltipState(false)}
-                      onChange={(e) => filterTrigger == 'onchange' && handleChangeSearch(e)}
-                      onKeyUp={(e) =>
-                        filterTrigger == 'onenter' && e.code == 'Enter' && handleKeyUpSearch(e)
-                      }
-                    />,
+          {fields.length
+            ? Children.toArray(
+                fields.map((field, index) =>
+                  TooltipComponent(
+                    <div>
+                      <Label>{field.label || 'Filtro vazio'}</Label>
+                      <Input
+                        className="w-full"
+                        name={`pesquisa_${field.value}`}
+                        placeholder="Termo de pesquisa"
+                        onChange={(e) =>
+                          filterTrigger == 'onchange' && handleChangeSearch(e, index)
+                        }
+                        onKeyUp={(e) =>
+                          filterTrigger == 'onenter' &&
+                          e.code == 'Enter' &&
+                          handleKeyUpSearch(e, index)
+                        }
+                      />
+                    </div>,
                     showTooltip,
                     showTooltipState,
                     filterTrigger,
-                  )}
-            </Grid>
-            <Grid item lg={2} sm={4} xs={12}>
-              <Stack>
-                <Button
-                  size="large"
-                  type="button"
-                  variant="outlined"
-                  onFocus={() => setShowTooltipState(true)}
-                  onBlur={() => setShowTooltipState(false)}
-                  endIcon={<FilterAltIcon />}
-                  onClick={() => {
-                    if (!!filterModalRef.current) filterModalRef.current.openModal()
-                  }}
-                >
-                  Filtrar
-                </Button>
-              </Stack>
-            </Grid>
-          </Grid>
+                  ),
+                ),
+              )
+            : TooltipComponent(
+                <div>
+                  <Label className='text-left'>Pesquisa</Label>
+                  <Input
+                    className="w-full"
+                    name="pesquisa"
+                    placeholder="Termo de pesquisa"
+                    onFocus={() => setShowTooltipState(true)}
+                    onBlur={() => setShowTooltipState(false)}
+                    onChange={(e) => filterTrigger == 'onchange' && handleChangeSearch(e)}
+                    onKeyUp={(e) =>
+                      filterTrigger == 'onenter' && e.code == 'Enter' && handleKeyUpSearch(e)
+                    }
+                  />
+                </div>,
+                showTooltip,
+                showTooltipState,
+                filterTrigger,
+              )}
+          <Button
+            onFocus={() => setShowTooltipState(true)}
+            onBlur={() => setShowTooltipState(false)}
+            onClick={() => {
+              if (filterModalRef.current) filterModalRef.current.handleOpen()
+            }}
+          >
+            Filtrar
+          </Button>
           {action}
         </Card.Body>
         {!!footer && <Card.Footer>{footer}</Card.Footer>}
-      </Collapse>
+      </Collapsible>
     </Card.Root>
   )
 }

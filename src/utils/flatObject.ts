@@ -1,5 +1,5 @@
 
-export default function flatObject(obj: object, prevKey?: string): any {
+export default function flatObject(obj: any, prevKey?: string): any {
     return Object.entries(obj)
         .map(([key, value]) => {
             if (value instanceof Object) {

@@ -1,60 +1,39 @@
-
 import {
-    ForwardRefRenderFunction,
-    PropsWithChildren,
-    forwardRef,
-    useImperativeHandle,
-    useState,
+  ForwardRefRenderFunction,
+  PropsWithChildren,
+  forwardRef,
+  useImperativeHandle,
+  useState,
 } from 'react'
-import Modal from '@mui/material/Modal'
-import { tv } from 'tailwind-variants'
+import { Dialog, DialogContent } from '../ui/dialog'
 
 export interface IBasicModalProps extends PropsWithChildren {
-    className?: string
+  className?: string
 }
 
 export interface IModalAttributes {
-    openModal: () => void
-    closeModal: () => void
+  handleOpen: (open?: boolean) => void
 }
 
-const basicModal = tv({
-    base: 'absolute top-1/2 left-1/2 md:w-4/6 w-5/6 rounded-lg shadow-2xl',
-})
-
 const BasicModal: ForwardRefRenderFunction<IModalAttributes, IBasicModalProps> = (
-    { children, className },
-    ref,
+  { children },
+  ref,
 ) => {
-    const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false)
 
-    const openModal = () => setOpen(true)
-    const closeModal = () => setOpen(false)
+  const handleOpen = (_open: boolean = true) => setOpen(_open)
 
-    useImperativeHandle(ref, () => {
-        return {
-            openModal,
-            closeModal,
-        }
-    })
+  useImperativeHandle(ref, () => {
+    return {
+      handleOpen,
+    }
+  })
 
-    return (
-        <Modal
-            open={open}
-            onClose={closeModal}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
-            <div
-                className={basicModal({ className })}
-                style={{
-                    transform: 'translate(-50%, -50%)',
-                }}
-            >
-                {children}
-            </div>
-        </Modal>
-    )
+  return (
+    <Dialog open={open} onOpenChange={handleOpen}>
+      <DialogContent>{children}</DialogContent>
+    </Dialog>
+  )
 }
 
 export default forwardRef(BasicModal)

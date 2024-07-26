@@ -1,11 +1,9 @@
 
-import { IconButton, IconButtonProps } from '@mui/material'
 import { PropsWithChildren, ReactNode, useCallback } from 'react'
 import { tv } from 'tailwind-variants'
 import { useDataGrid } from './contexts/DataGridContext'
-import DeleteIcon from '@mui/icons-material/Delete'
 
-export interface IDataGridActionsDeleteProps extends IconButtonProps {
+export interface IDataGridActionsDeleteProps {
     className?: string
     icon?: ReactNode
 }
@@ -16,26 +14,24 @@ const dataGridActionsDelete = tv({
 
 export default function DataGridActionsDelete({
     className,
-    color = 'error',
-    icon = <DeleteIcon />,
     children,
+    icon,
     ...rest
 }: PropsWithChildren<IDataGridActionsDeleteProps>) {
     const { modalDeleteRef, setComponentDelete } = useDataGrid()
 
     const openModal = useCallback(() => {
         setComponentDelete(children)
-        if(!!modalDeleteRef.current) modalDeleteRef.current.openModal()
+        if(!!modalDeleteRef.current) modalDeleteRef.current.handleOpen()
     }, [setComponentDelete, modalDeleteRef, children])
 
     return (
-        <IconButton
+        <button
             className={dataGridActionsDelete({ className })}
-            color={color}
             onClick={openModal}
             {...rest}
         >
             {icon}
-        </IconButton>
+        </button>
     )
 }

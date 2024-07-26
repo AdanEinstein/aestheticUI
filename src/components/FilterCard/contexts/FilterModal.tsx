@@ -1,81 +1,96 @@
-
-import FilterAltIcon from '@mui/icons-material/FilterAlt'
-import { ForwardRefRenderFunction, ReactNode, forwardRef } from 'react'
-import { GridColDef } from '@mui/x-data-grid'
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material'
+import { Children, ForwardRefRenderFunction, ReactNode, forwardRef } from 'react'
 import { useFilterFields } from './FilterFieldsContext'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Card } from '../../Layout/Card'
 import BasicModal, { IModalAttributes } from '../../BasicModal'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from 'src/components/ui/select'
+import { Button } from 'src/components/ui/button'
+import { ColumnDef } from '@tanstack/react-table'
+import { Form, FormControl, FormField, FormItem } from 'src/components/ui/form'
 
-export interface IFilterModalProps {
-    title: ReactNode
-    columns: GridColDef[]
+export interface IFilterModalProps<T = {}> {
+  title: ReactNode
+  columns: ColumnDef<T>[]
 }
-
 const schema = z.object({
-    campos: z.string(),
+  campos: z.string(),
 })
 
-const FilterModal: ForwardRefRenderFunction<IModalAttributes, IFilterModalProps> = (
-    { title, columns },
-    ref,
-) => {
-    const { addField } = useFilterFields()
-    const { register, getValues } = useForm({
-        resolver: zodResolver(schema),
-    })
+type SchemaType = z.infer<typeof schema>
 
-    return (
-        <BasicModal ref={ref}>
-            <Card.Root>
-                <Card.Header>{title}</Card.Header>
-                <Card.Body>
-                    <Grid container spacing={2}>
-                        <Grid item md={10} xs={12}>
-                            <FormControl className="w-full">
-                                <InputLabel>Selecione os campos</InputLabel>
-                                <Select
-                                    id="campos"
-                                    className="w-full"
-                                    variant="standard"
-                                    {...register('campos')}
-                                >
-                                    {columns.map((col) => {
-                                        return (
-                                            col.field != 'actions' && (
-                                                <MenuItem key={col.field} value={col.field}>
-                                                    {col.headerName}
-                                                </MenuItem>
-                                            )
-                                        )
-                                    })}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item md={2} xs={12}>
-                            <Button
-                                fullWidth
-                                endIcon={<FilterAltIcon fontSize="medium" />}
-                                onClick={() => {
-                                    addField({
-                                        label: columns.filter(
-                                            (col) => col.field == String(getValues('campos')),
-                                        )[0].headerName,
-                                        value: String(getValues('campos')),
-                                    })
-                                }}
-                            >
-                                Adicionar
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Card.Body>
-            </Card.Root>
-        </BasicModal>
+const FilterModal: ForwardRefRenderFunction<IModalAttributes, IFilterModalProps> = (
+  { title, columns },
+  ref,
+) => {
+  const { addField } = useFilterFields()
+  const form = useForm<SchemaType>({
+    resolver: zodResolver(schema),
+  })
+
+  const onSubmit = (data: SchemaType) => {
+    const selectedColumn = columns.find(
+      //@ts-ignore
+      (col) => col.accessorKey === data.campos,
     )
+
+    if (selectedColumn) {
+      addField({
+        //@ts-ignore
+        label: selectedColumn.header(),
+        value: data.campos,
+      })
+    }
+  }
+
+  return (
+    <BasicModal ref={ref}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <FormField
+            control={form.control}
+            name="campos"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione os campos" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Campos</SelectLabel>
+                        {Children.toArray(
+                          columns.map(
+                            (col) =>
+                              //@ts-ignore
+                              col.accessorKey != 'actions' && (
+                                //@ts-ignore
+                                <SelectItem value={col.accessorKey}>{col.header()}</SelectItem>
+                              ),
+                          ),
+                        )}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Adicionar</Button>
+        </form>
+      </Form>
+    </BasicModal>
+  )
 }
 
 export default forwardRef(FilterModal)

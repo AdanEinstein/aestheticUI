@@ -1,6 +1,6 @@
+import { Row } from '@tanstack/react-table'
 import BasicModal from '../../../components/BasicModal'
 import { IModalAttributes } from '../../../components/BasicModal'
-import { GridRenderCellParams, GridTreeNodeWithRender, GridValidRowModel } from '@mui/x-data-grid'
 import {
     Dispatch,
     PropsWithChildren,
@@ -13,12 +13,12 @@ import {
     useState,
 } from 'react'
 
-export interface IDataGridProvider<T extends GridValidRowModel> {
-    params: GridRenderCellParams<T, any, any, GridTreeNodeWithRender>
+export interface IDataGridProvider<T = any> {
+    params: Row<T>
 }
 
-export interface IDataGridContext<T extends GridValidRowModel> {
-    params: GridRenderCellParams<T, any, any, GridTreeNodeWithRender>
+export interface IDataGridContext<T = any> {
+    params: Row<T>
     setComponentDelete: Dispatch<SetStateAction<ReactNode>>
     setComponentEdit: Dispatch<SetStateAction<ReactNode>>
     modalDeleteRef: RefObject<IModalAttributes>
@@ -27,7 +27,7 @@ export interface IDataGridContext<T extends GridValidRowModel> {
 
 const DataGridContext = createContext({} as IDataGridContext<any>)
 
-export default function DataGridProvider<T extends GridValidRowModel>({
+export default function DataGridProvider<T>({
     children,
     params,
 }: PropsWithChildren<IDataGridProvider<T>>) {

@@ -11,13 +11,11 @@ import {
   useRef,
   useState,
 } from 'react'
-import { GridColDef } from '@mui/x-data-grid'
 import FilterModal from './FilterModal'
-import { useSnackbar } from 'notistack'
 import { IModalAttributes } from '../../../components/BasicModal'
 
 export interface FilterField {
-  label?: string
+  label?: ReactNode
   value: string
 }
 
@@ -35,7 +33,7 @@ interface IFilterFields {
   ) => void
   addField: (field: FilterField) => void
   removeField: (field: string) => void
-  setColumns: (columns: GridColDef[]) => void
+  setColumns: (columns: any[]) => void
   setFilterModalTitle: Dispatch<SetStateAction<ReactNode>>
 }
 
@@ -44,11 +42,9 @@ const FilterFieldsContext = createContext<IFilterFields>({} as IFilterFields)
 export const FilterFieldsProvider = ({ children }: PropsWithChildren) => {
   const filterModalRef = useRef<IModalAttributes>(null)
   const [fields, setFields] = useState<FilterField[]>([])
-  const [columns, setColumns] = useState<GridColDef[]>([])
+  const [columns, setColumns] = useState<any[]>([])
   const [search, setSearch] = useState<string[]>([''])
   const [filterModalTitle, setFilterModalTitle] = useState<ReactNode>()
-
-  const { enqueueSnackbar } = useSnackbar()
 
   const handleChangeSearch = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -80,10 +76,8 @@ export const FilterFieldsProvider = ({ children }: PropsWithChildren) => {
     setSearch((prev) => [...prev, ''])
     setFields((prev) => {
       if (field.value == '0' || field.value == '') {
-        enqueueSnackbar('Selecione um campo válido!', { variant: 'info' })
         return prev
       } else if (prev.find((el) => el.value === field.value)) {
-        enqueueSnackbar('Campo já selecionado!', { variant: 'error' })
         return prev
       }
       return [...prev, field]

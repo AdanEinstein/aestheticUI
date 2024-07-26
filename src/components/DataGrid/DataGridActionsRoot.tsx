@@ -1,26 +1,25 @@
-
 import { PropsWithChildren } from 'react'
 import DataGridProvider from './contexts/DataGridContext'
-import { GridRenderCellParams, GridTreeNodeWithRender, GridValidRowModel } from '@mui/x-data-grid'
 import { tv } from 'tailwind-variants'
+import { Row } from '@tanstack/react-table'
 
-export interface IDataGridActionsRoot<T extends GridValidRowModel> {
-    className?: string
-    params: GridRenderCellParams<T, any, any, GridTreeNodeWithRender>
+export interface IDataGridActionsRoot<T = any> {
+  className?: string
+  params: Row<T>
 }
 
 const dataGridActionsRoot = tv({
-    base: 'flex',
+  base: 'flex',
 })
 
-export default function DataGridActionsRoot<T extends GridValidRowModel>({
-    children,
-    params,
-    className,
+export default function DataGridActionsRoot<T>({
+  children,
+  params,
+  className,
 }: PropsWithChildren<IDataGridActionsRoot<T>>) {
-    return (
-        <DataGridProvider params={params}>
-            <div className={dataGridActionsRoot({ className })}>{children}</div>
-        </DataGridProvider>
-    )
+  return (
+    <DataGridProvider params={params}>
+      <div className={dataGridActionsRoot({ className })}>{children}</div>
+    </DataGridProvider>
+  )
 }

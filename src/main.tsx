@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './style.css'
+import './globals.css'
 import {
   Card,
   DataGridActions,
@@ -11,8 +11,16 @@ import {
   useFilter,
 } from './components'
 import { INav } from './@types/sitemap'
-import { DataGrid, GridColDef, ptBR } from '@mui/x-data-grid'
-import pessoas from './data/pessoas.json'
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import pessoasJson from './pessoas.json'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './components/ui/table'
 
 const sitemap: INav = {
   menu1: {
@@ -87,51 +95,35 @@ const sitemap: INav = {
   },
 }
 
-export const pessoaModel: GridColDef<any>[] = [
+export const model: ColumnDef<any>[] = [
   {
-    field: 'id',
-    headerName: 'ID',
-    type: 'number',
-    headerAlign: 'center',
-    align: 'center',
-    minWidth: 100,
+    accessorKey: 'id',
+    header: () => <div className="text-right">ID</div>,
+    cell: ({ row }) => <div className="text-right font-medium">{row.getValue('id')}</div>,
   },
   {
-    field: 'cpf_cnpj',
-    headerName: 'CPF/CNPJ',
-    type: 'number',
-    headerAlign: 'center',
-    align: 'center',
-    minWidth: 200,
-    flex: 1,
+    accessorKey: 'cpf_cnpj',
+    header: () => <div className="text-right">CPF/CNPJ</div>,
+    cell: ({ row }) => <div className="text-right font-medium">{row.getValue('cpf_cnpj')}</div>,
   },
   {
-    field: 'nome_completo',
-    headerName: 'Nome/Razão Social',
-    type: 'string',
-    headerAlign: 'center',
-    align: 'center',
-    minWidth: 200,
-    flex: 1,
+    accessorKey: 'nome_completo',
+    header: () => <div className="text-right">Nome/Razão Social</div>,
+    cell: ({ row }) => (
+      <div className="text-right font-medium">{row.getValue('nome_completo')}</div>
+    ),
   },
   {
-    field: 'telefone',
-    headerName: 'Telefone',
-    type: 'string',
-    headerAlign: 'center',
-    align: 'center',
-    minWidth: 150,
-    flex: 1,
+    accessorKey: 'telefone',
+    header: () => <div className="text-right">Telefone</div>,
+    cell: ({ row }) => <div className="text-right font-medium">{row.getValue('telefone')}</div>,
   },
   {
-    field: 'actions',
-    headerName: 'Ações',
-    headerAlign: 'center',
-    align: 'center',
-    width: 300,
-    renderCell(params) {
+    accessorKey: 'actions',
+    header: () => <div className="text-right">Ações</div>,
+    cell({ row }) {
       return (
-        <DataGridActions.Root params={params} className="gap-3">
+        <DataGridActions.Root params={row} className="gap-3">
           <DataGridActions.Edit />
           <DataGridActions.Delete />
         </DataGridActions.Root>
@@ -141,16 +133,16 @@ export const pessoaModel: GridColDef<any>[] = [
 ]
 
 function Page() {
-  const { filteredData, loading } = useFilter({ data: pessoas as any, model: pessoaModel })
+  const { filteredData, loading } = useFilter({ data: pessoasJson as any, model: model })
+
+  const table = useReactTable<any>({
+    data: filteredData,
+    columns: model,
+    getCoreRowModel: getCoreRowModel(),
+  })
 
   return (
-    <div
-      className="h-screen w-full gap-3"
-      style={{
-        display: 'grid',
-        gridTemplateRows: '60px 1fr',
-      }}
-    >
+    <div>
       <Navbar.Root className="gap-3">
         <Navbar.Content>
           <Nav
@@ -168,33 +160,51 @@ function Page() {
           showTooltip
           filterTrigger="onenter"
           className="md:w-4/6"
-          dataModel={pessoaModel}
-          title={<span className="text-2xl font-light">Filtrar Pessoas</span>}
-          titleModal={<span className="text-2xl font-light">Filtrar Pessoas</span>}
+          dataModel={model}
+          title={<span className="text-2xl font-light">Filtrar</span>}
+          titleModal={<span className="text-2xl font-light">Filtrar</span>}
         />
         <Card.Root className="md:w-4/6">
           <Card.Header className="text-2xl font-light">
             <div className="flex flex-row items-center justify-between">Pessoas</div>
           </Card.Header>
           <Card.Body className="h-[480px]">
-            <DataGrid
-              loading={loading}
-              rows={filteredData}
-              columns={pessoaModel}
-              getRowId={(row) => `${Math.random() * row.id}`}
-              localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-              initialState={{
-                columns: {
-                  columnVisibilityModel: {
-                    id: false,
-                  },
-                },
-                pagination: {
-                  paginationModel: { page: 0, pageSize: 10 },
-                },
-              }}
-              pageSizeOptions={[10, 25, 50, 100]}
-            />
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(header.column.columnDef.header, header.getContext())}
+                        </TableHead>
+                      )
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={model.length} className="h-24 text-center">
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           </Card.Body>
         </Card.Root>
       </div>

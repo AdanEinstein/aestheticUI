@@ -1,8 +1,6 @@
 
 import { ComponentProps, ReactNode } from 'react'
 import { tv } from 'tailwind-variants'
-import { IconButton } from '@mui/material'
-import LogoutIcon from '@mui/icons-material/Logout'
 
 export interface INavbarRightProps extends ComponentProps<'div'> {
     currentUser?: string,
@@ -20,14 +18,13 @@ const NavbarRight = ({ children, className, currentUser, handleLogout, icon, ...
             {children}
             {
            !!currentUser &&
-           <IconButton
+           <button
              style={{ color: "white" }}
              aria-label="logout" 
-             size="large"
              onClick={handleLogout}
            >
-             {icon || <LogoutIcon />}
-           </IconButton>
+             {icon}
+           </button>
          }
         </div>
     )

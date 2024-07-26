@@ -1,12 +1,12 @@
-import { GridColDef } from "@mui/x-data-grid";
 import { useFilterFields } from "../FilterFieldsContext";
 import flatObject from "../../../../utils/flatObject";
 import { adjustedDate } from "../../../../utils/converters/date";
 import { useEffect, useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
 
-export default function useFilter<T extends object>({data, model}: {
-  data: T[],
-  model: GridColDef[]
+export default function useFilter<T = any>({data, model}: {
+  data: (Partial<Omit<ColumnDef<T>, 'id'>>)[],
+  model: any[]
 }) {
   const { fields, search } = useFilterFields();
   const [filteredData, setFilteredData] = useState(data)
@@ -23,7 +23,7 @@ export default function useFilter<T extends object>({data, model}: {
         if (!!fields.length) {
           return search.every((sch) => {
             return Object.entries(flatObject(item)).some(([key, value]) => {
-              const columns = model.filter((col) => col.field == key);
+              const columns = model.filter((col) => col.accessorKey == key);
               if (
                 !!columns.length &&
                 columns[0].type == "date" &&
@@ -47,7 +47,7 @@ export default function useFilter<T extends object>({data, model}: {
         } else {
           return search.every((sch) => {
             return Object.entries(flatObject(item)).some(([key, value]) => {
-              const columns = model.filter((col) => col.field == key);
+              const columns = model.filter((col) => col.accessorKey == key);
               if (
                 !!columns.length &&
                 columns[0].type == "date" &&
